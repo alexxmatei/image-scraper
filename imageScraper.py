@@ -8,7 +8,7 @@ import csv
 csv_file_path = 'example.csv'
 
 # Initialize an empty list to hold the data
-data = []
+csv_data = []
 
 # Open the CSV file using a context manager
 with open(csv_file_path, 'r') as csv_file:
@@ -20,15 +20,15 @@ with open(csv_file_path, 'r') as csv_file:
     for row in csv_reader:
 
         # Append the entire row to the data list
-        data.append(row)
+        csv_data.append(row)
 
 # Create a directory to save the downloaded images if it doesn't already exist
 mkDirAtCwdIfNoExist("scraped_images")
 
-for element in data:
-    # Create a folder for the current element in the scraped_images directory
-    folderPath = mkDirAtCwdIfNoExist(f"scraped_images/{element[0]}")
-    url = element[1]
+for row in csv_data:
+    # Create a folder for the current row in the scraped_images directory
+    folderPath = mkDirAtCwdIfNoExist(f"scraped_images/{row[0]}")
+    url = row[1]
     if url != '':
         print(url)
 
