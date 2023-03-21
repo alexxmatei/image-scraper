@@ -30,8 +30,8 @@ for row in csv_data:
     folderPath = mkDirAtCwdIfNoExist(f"scraped_images/{row[0]}")
     url = row[1]
     if url != '':
-        print(url)
-
+        print(f"\nScraping for item: {row[0]}")
+        print(f"Downloading images from URL: {url}")
         # Replace 'class_name' with the class name of the HTML element that
         # contains the images
         # TODO - Give the class name as argument when calling script OR
@@ -48,7 +48,7 @@ for row in csv_data:
         elements = soup.find_all(class_=class_name)
 
         # Loop through all elements and find the image URLs
-        for element in elements:
+        for i, element in enumerate(elements, start=1):
             # Get a list of all image URLs within the current element
             image_urls = [img['src'] for img in element.find_all('img')]
 
@@ -67,7 +67,7 @@ for row in csv_data:
                 # add the https:// prefix
                 if image_url.startswith('//'):
                     image_url = f'https:{image_url}'
-                print(image_url)
+                print(f"Image URL #{i}: {image_url}")
 
                 # Download the image and save it to the appropriate folder
                 response = requests.get(image_url)
