@@ -22,15 +22,18 @@ with open(csv_file_path, 'r') as csv_file:
         # Append the entire row to the data list
         data.append(row)
 
+# Create a directory to save the downloaded images if it doesn't already exist
 mkDirAtCwdIfNoExist("scraped_images")
 
 for element in data:
+    # Create a folder for the current element in the scraped_images directory
     folderPath = mkDirAtCwdIfNoExist(f"scraped_images/{element[0]}")
     url = element[1]
     if url != '':
         print(url)
 
-        # Replace 'class_name' with the class name of the HTML element that contains the images
+        # Replace 'class_name' with the class name of the HTML element that
+        # contains the images
         class_name = ''
 
         # Send a request to the website and get the HTML response
@@ -44,19 +47,27 @@ for element in data:
 
         # Loop through all elements and find the image URLs
         for element in elements:
+            # Get a list of all image URLs within the current element
             image_urls = [img['src'] for img in element.find_all('img')]
 
             # Loop through all image URLs and download the images
             for image_url in image_urls:
+                # Get the index of the last occurrence of '.png' or '.jpg'
                 png_index = image_url.find(".png")
                 jpg_index = image_url.find(".jpg")
-                index = max(png_index, jpg_index) + 4
-                # Extract the substring before the index
+                IMAGE_FORMAT_STRING_LENGTH = 4
+                index = max(png_index, jpg_index) + IMAGE_FORMAT_STRING_LENGTH
+
+                # Extract the substring until the index to get the image URL
+                # We do this to remove the extra image resize queries at the end
                 image_url = image_url[:index]
-                # If the url doesn't start with https:, but with //, add the https:
+                # If the URL starts with // instead of https://,
+                # add the https:// prefix
                 if image_url.startswith('//'):
                     image_url = f'https:{image_url}'
                 print(image_url)
+
+                # Download the image and save it to the appropriate folder
                 response = requests.get(image_url)
                 filename = (folderPath + "/" + os.path.basename(image_url))
                 with open(filename, 'wb') as f:
