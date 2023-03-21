@@ -48,6 +48,11 @@ for element in data:
 
             # Loop through all image URLs and download the images
             for image_url in image_urls:
+                png_index = image_url.find(".png")
+                jpg_index = image_url.find(".jpg")
+                index = max(png_index, jpg_index) + 4
+                # Extract the substring before the index
+                image_url = image_url[:index]
                 # If the url doesn't start with https:, but with //, add the https:
                 if image_url.startswith('//'):
                     image_url = f'https:{image_url}'
