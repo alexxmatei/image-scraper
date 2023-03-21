@@ -34,6 +34,8 @@ for element in data:
 
         # Replace 'class_name' with the class name of the HTML element that
         # contains the images
+        # TODO - Give the class name as argument when calling script OR
+        # TODO - Add it to an envar
         class_name = ''
 
         # Send a request to the website and get the HTML response
